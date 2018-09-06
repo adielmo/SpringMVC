@@ -1,0 +1,25 @@
+/alvo/
+! .mvn / wrapper / maven-wrapper.jar
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.projeto
+.configurações
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idéia
+* .iws
+* .iml
+* .ipr
+
+### NetBeans ###
+/ nbproject / private /
+/construir/
+/ nbbuild /
+/ dist /
+/ nbdist /
+/.nb-gradle/
