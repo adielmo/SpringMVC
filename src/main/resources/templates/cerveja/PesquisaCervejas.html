@@ -33,8 +33,8 @@
 
 		<div class="container-fluid">
 			<form method="GET" th:object="${cervejaFilter}">
+			
 				<div class="row">
-
 					<div class=" col-sm-6 form-group">
 						<label class="control-label" for="sku">SKU</label> <input id="sku"
 							type="text" class="form-control" autofocus="autofocus"
@@ -120,7 +120,9 @@
 							<th class="table-cervejas-col-estilo">Estilo</th>
 							<th class="table-cervejas-col-estilo">Sabor</th>
 							<th class="table-cervejas-col-origem">Origem</th>
-							<th class="table-cervejas-col-valor">Valor</th>
+							<th class="table-cervejas-col-valor">
+							  <brewer:order page="${pagina}" field="valor" text="Valor"/>
+							</th>
 							<th class="table-cervejas-col-acoes">Açoes</th>
 
 						</tr>
