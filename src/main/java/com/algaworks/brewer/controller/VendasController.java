@@ -24,6 +24,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.algaworks.brewer.controller.page.PageWrapper;
 import com.algaworks.brewer.controller.validator.VendaValidator;
+import com.algaworks.brewer.mail.Mailer;
 import com.algaworks.brewer.model.Cerveja;
 import com.algaworks.brewer.model.StatusVenda;
 import com.algaworks.brewer.model.Venda;
@@ -52,6 +53,9 @@ public class VendasController {
 	
 	@Autowired
 	private Vendas vendas;
+	
+	@Autowired
+	private Mailer mailer;
 	
 	@InitBinder("venda")
 	public void inicializarValidator(WebDataBinder binder){
@@ -118,10 +122,15 @@ public class VendasController {
 		if (result.hasErrors()) {
 			return novo(venda);
 		}
+		
 		venda.setUsuario(usuarioSistema.getUsuario());
 		
 		
 		cadastroVendaService.email(venda);
+		
+		mailer.enviar();
+		System.out.println("### Logo depois da chamada ao método enviar! ");
+		
 	 attributes.addFlashAttribute("mensagem", "Venda salva e e-mail enviado");
 		return new ModelAndView("redirect:/vendas/novo");
 	}
