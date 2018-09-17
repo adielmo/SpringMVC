@@ -25,6 +25,12 @@ public class CadastroCervejaService {
 		publisher.publishEvent(new CervejaSalvaEvent(cerveja));
 		
 	}
+	@Transactional
+	public void excluir(Long codigo){
+		
+		cervejas.delete(codigo);
+	}
+	
 	
 	
 	

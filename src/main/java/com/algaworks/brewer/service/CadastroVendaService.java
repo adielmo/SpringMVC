@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.algaworks.brewer.model.StatusVenda;
 import com.algaworks.brewer.model.Venda;
+import com.algaworks.brewer.repository.Cervejas;
 import com.algaworks.brewer.repository.Vendas;
 
 @Service
@@ -41,7 +42,7 @@ public class CadastroVendaService {
 		salvar(venda);
 		
 	}
-
+	
 	
 
 }

@@ -3,7 +3,8 @@
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="layout/LayoutPadrao"
-	xmlns:brewer="http://brewer.algaworks.com">
+	xmlns:brewer="http://brewer.algaworks.com"
+	xmlns:data="http://www.thymeleaf.org/extras/data">
 <head>
 <title>Pesquisa de cerveja</title>
 
@@ -128,8 +129,8 @@
 						</tr>
 					</thead>
 
-					<tbody>
-						<tr th:each="cerveja : ${pagina.conteudo}">
+				<tbody>
+					<tr th:each="cerveja : ${pagina.conteudo}">
 							<td class="text-center"><img
 								th:src="@{/fotos/thumbnail.{foto}(foto=${cerveja.fotoOuMock})}"
 								class="img-responsive" /></td>
@@ -139,12 +140,16 @@
 							<td th:text="${cerveja.sabor.descricao}"></td>
 							<td th:text="${cerveja.origem.descricao}"></td>
 							<td class="text-right" th:text="|R$ ${cerveja.valor}|"></td>
-							<td class="text-center"><a class="btn btn-link btn-xs"
-								title="Editar"> <i class="glyphicon glyphicon-pencil"></i>
-							</a> <a class="btn btn-link btn-xs" title="Excluir"> <i
-									class="glyphicon glyphicon-remove"></i>
-							</a></td>
-						</tr>
+							<td class="text-center">
+							   <a class="btn btn-link btn-xs btn-xs js-tooltip" title="Editar"> 
+							      <i class="glyphicon glyphicon-pencil btn-xs js-tooltip"></i>
+							   </a>
+							   <a class="btn btn-link btn-xs btn-xs js-tooltip js-exclusao-btn" title="Excluir" href="#" data:url="@{/cervejas/{codigo}(codigo=${cerveja.codigo})}"
+				                 data:objeto="${cerveja.nome}">
+							      <i class="glyphicon glyphicon-remove"></i>
+							   </a>
+							</td>
+					</tr>
 						<tr th:if="${pagina.vazia}">
 							<td colspan="8">Nenhuma cerveja encontrada!</td>
 						</tr>
