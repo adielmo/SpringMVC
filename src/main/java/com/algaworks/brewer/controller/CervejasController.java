@@ -30,6 +30,7 @@ import com.algaworks.brewer.repository.Cervejas;
 import com.algaworks.brewer.repository.Estilos;
 import com.algaworks.brewer.repository.filter.CervejaFilter;
 import com.algaworks.brewer.service.CadastroCervejaService;
+import com.algaworks.brewer.service.exception.ImpossivelExcluirEntidadeException;
 
 @Controller
 @RequestMapping("/cervejas")
@@ -55,8 +56,8 @@ public class CervejasController {
 		return mv ;
 	}
 	
-	@RequestMapping(value ="/novo", method = RequestMethod.POST)
-	public ModelAndView cadastrar(@Valid Cerveja cerveja, BindingResult result, RedirectAttributes attributes) {
+	@RequestMapping(value = {"/novo", "{\\d+}"}, method = RequestMethod.POST)
+	public ModelAndView salvar(@Valid Cerveja cerveja, BindingResult result, RedirectAttributes attributes) {
 		
 		if (result.hasErrors()) {
 		
@@ -92,11 +93,27 @@ public class CervejasController {
 	}
 	
 	@DeleteMapping("/{codigo}")
-	public @ResponseBody ResponseEntity<?> excluir(@PathVariable("codigo") Long codigo){
-	   cadastroCervejaService.excluir(codigo);	
+	public @ResponseBody ResponseEntity<?> excluir(@PathVariable("codigo") Cerveja cerveja){
+	  
+		try {
+		cadastroCervejaService.excluir(cerveja);	
+		
+		}catch(ImpossivelExcluirEntidadeException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+			
+		}
 	   
 	   return ResponseEntity.ok().build();
 	   
+	}
+	
+	@GetMapping("/{codigo}")
+	public ModelAndView editar(@PathVariable("codigo") Cerveja cerveja){
+		
+		ModelAndView mv = novo(cerveja);
+		mv.addObject(cerveja);
+		
+		return mv;
 	}
 	
 		

@@ -24,6 +24,10 @@ public class CervejaSalvaEvent {
 		return !StringUtils.isEmpty(cerveja.getFoto());
 	}
 	
+	public boolean isNovaFoto(){
+		return cerveja.isNova();
+	}
+	
 	
 	
 	

@@ -26,8 +26,9 @@ Brewer.DialogoExcluir = (function(){
 			title:"Tem certeza?",
 			text:'Excluir "' + objeto + ' "? Você não pode recuperar depois',
 			showCancelButton: true,
-			confimButtonColor:"#DD6B55",
+			confimButtonColor:"#DD6B55",			
 			confinButtonText:"Sim, exclua agora!",
+			closeOnConfirm: false,
 						
 		}, onExcluirConfirmado.bind(this, url));
 		
@@ -38,7 +39,8 @@ Brewer.DialogoExcluir = (function(){
 			$.ajax({
 				url: url,
 				method:'DELETE',
-				success: onExcluidoSucesso.bind(this)
+				success: onExcluidoSucesso.bind(this),
+				error: onErrorExcluir.bind(this)
 			});
 			
 		}		
@@ -52,6 +54,10 @@ Brewer.DialogoExcluir = (function(){
 		var novoUrl = urlAtual.indexOf('excluido') > -1 ? urlAtual : urlAtual + separador + 'excluido';
 		
 		window.location = novoUrl;
+	}
+	
+	function onErrorExcluir(e){
+		swal('Oops!', e.responseText, 'error');
 	}
 	
 	return DialogoExcluir;
