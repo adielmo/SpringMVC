@@ -9,5 +9,7 @@ import com.algaworks.brewer.repository.filter.VendaFilter;
 public interface VendasQueries {
 	
 	public Page<Venda> filtar(VendaFilter vendaFilter, Pageable pageable);
+	
+	public Venda buscarComItens(Long codigo);
 
 }

@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -26,6 +27,7 @@ import com.algaworks.brewer.controller.page.PageWrapper;
 import com.algaworks.brewer.controller.validator.VendaValidator;
 import com.algaworks.brewer.mail.Mailer;
 import com.algaworks.brewer.model.Cerveja;
+import com.algaworks.brewer.model.ItemVenda;
 import com.algaworks.brewer.model.StatusVenda;
 import com.algaworks.brewer.model.Venda;
 import com.algaworks.brewer.repository.Cervejas;
@@ -67,9 +69,7 @@ public class VendasController {
 	public ModelAndView novo(Venda venda){
 		ModelAndView mv =  new ModelAndView("venda/CadastroVenda");
 		
-		if (StringUtils.isEmpty(venda.getUuid())) {
-			venda.setUuid( UUID.randomUUID().toString());
-		}
+	setUuid(venda);
 		
 	   mv.addObject("itens",venda.getItens());
 	   mv.addObject("valorFrete", venda.getValorFrete());
@@ -80,7 +80,8 @@ public class VendasController {
 	}
 	
 	@PostMapping(value="/novo", params="salvar")
-	public ModelAndView salvar(Venda venda, BindingResult result, RedirectAttributes attributes, @AuthenticationPrincipal UsuarioSistema usuarioSistema){
+	public ModelAndView salvar(Venda venda, BindingResult result, 
+			RedirectAttributes attributes, @AuthenticationPrincipal UsuarioSistema usuarioSistema){
 		
 		validarVenda(venda, result);
 		
@@ -99,7 +100,8 @@ public class VendasController {
 
 	
 	@PostMapping(value="/novo", params="emitir")
-	public ModelAndView emitir(Venda venda, BindingResult result, RedirectAttributes attributes, @AuthenticationPrincipal UsuarioSistema usuarioSistema){
+	public ModelAndView emitir(Venda venda, BindingResult result, 
+			RedirectAttributes attributes, @AuthenticationPrincipal UsuarioSistema usuarioSistema){
 		
 		validarVenda(venda, result);
 		
@@ -115,7 +117,8 @@ public class VendasController {
 	}
 	
 	@PostMapping(value="/novo", params="enviarEmail")
-	public ModelAndView enviarEmail(Venda venda, BindingResult result, RedirectAttributes attributes, @AuthenticationPrincipal UsuarioSistema usuarioSistema){
+	public ModelAndView enviarEmail(Venda venda, BindingResult result,
+			RedirectAttributes attributes, @AuthenticationPrincipal UsuarioSistema usuarioSistema){
 		
 		validarVenda(venda, result);
 		
@@ -176,6 +179,47 @@ public class VendasController {
 		
 	}
 	
+	@GetMapping("/{codigo}")
+	public ModelAndView editar(@PathVariable("codigo") Long codigo) {
+		Venda venda = vendas.buscarComItens(codigo);
+		
+		setUuid(venda);
+		for(ItemVenda item : venda.getItens()) {
+			
+			tabelasItens.adicionarItem(venda.getUuid(), item.getCerveja(), item.getQuantidade());
+		}
+		
+		ModelAndView mv = novo(venda);
+		mv.addObject(venda);
+		
+		return mv;
+		
+	}
+	
+	@PostMapping(value="/novo", params="cancelar")
+	public ModelAndView cancelar(Venda venda, BindingResult result, 
+			RedirectAttributes attributes, @AuthenticationPrincipal UsuarioSistema usuarioSistema){
+		try {
+			
+		cadastroVendaService.cancelar(venda);
+		
+		}catch(AccessDeniedException e){
+			
+		return new ModelAndView("/403");	
+		}
+		
+	 attributes.addFlashAttribute("mensagem", "Venda cancelada com sucesso");
+		return new ModelAndView("redirect:/vendas/" + venda.getCodigo());
+	}
+	
+
+	private void setUuid(Venda venda) {
+		
+		if (StringUtils.isEmpty(venda.getUuid())) {
+			venda.setUuid( UUID.randomUUID().toString());
+		}
+	}
+
 
 	private void validarVenda(Venda venda, BindingResult result) {
 		venda.adicionarItens(tabelasItens.getItens(venda.getUuid()));

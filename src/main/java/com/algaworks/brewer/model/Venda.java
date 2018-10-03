@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -23,10 +24,14 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.format.datetime.standard.DateTimeFormatterRegistrar;
+
 import com.mysql.fabric.xmlrpc.base.Array;
 
 @Entity
 @Table(name="venda")
+@DynamicUpdate
 public class Venda implements Serializable{
 
 	private static final long serialVersionUID = 1L;
@@ -37,7 +42,7 @@ public class Venda implements Serializable{
 	
 	@Column(name="data_criacao")
 	private LocalDateTime dataCriacao;
-	
+		
 	@Column(name="valor_frete")
 	private BigDecimal valorFrete;
 	
@@ -63,7 +68,7 @@ public class Venda implements Serializable{
 	@JoinColumn(name="codigo_usuario")
 	private Usuario usuario;
 	
-	@OneToMany(mappedBy="venda", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy="venda", cascade = CascadeType.ALL, orphanRemoval=true)
 	private List<ItemVenda> itens = new ArrayList<>();
 	
 	@Transient
@@ -190,6 +195,30 @@ public class Venda implements Serializable{
 	
 	public boolean isNova(){
 		return codigo == null;
+	}
+	
+	public String data(){
+		
+		LocalDate dia = this.codigo == null ? LocalDate.now() : this.dataCriacao.toLocalDate();
+	   
+		DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		
+		return dia.format(formatador);			
+	}
+	
+	public boolean dataHoje() {
+		
+		DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		
+		return data().equals(formatador.format(LocalDate.now()));
+	}
+	
+	public boolean isSalvarPermitido(){
+		return !status.equals(StatusVenda.CANCELADA);
+	}
+	
+	public boolean isSalvarProibido(){
+		return !isSalvarPermitido();
 	}
 	
 	public BigDecimal getValorTotalItens() {

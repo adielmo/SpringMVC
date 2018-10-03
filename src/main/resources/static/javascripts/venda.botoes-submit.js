@@ -22,7 +22,7 @@ Brewer.BotaoSubmit = (function() {
 		
 		this.formulario.append(acaoInput);
 		this.formulario.submit();
-		console.log(acao);
+		
 	}
 	
 	return BotaoSubmit
