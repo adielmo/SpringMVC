@@ -32,6 +32,7 @@ public class CadastroCervejaService {
 		publisher.publishEvent(new CervejaSalvaEvent(cerveja));
 		
 	}
+	
 	@Transactional
 	public void excluir(Cerveja cerveja){
 		try {
@@ -45,9 +46,6 @@ public class CadastroCervejaService {
 		}
 		
 	}
-	
-	
-	
 	
 	
 

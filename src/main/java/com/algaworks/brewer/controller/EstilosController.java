@@ -10,7 +10,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,10 +21,12 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.algaworks.brewer.controller.page.PageWrapper;
+import com.algaworks.brewer.model.Cerveja;
 import com.algaworks.brewer.model.Estilo;
 import com.algaworks.brewer.repository.Estilos;
 import com.algaworks.brewer.repository.filter.EstiloFilter;
 import com.algaworks.brewer.service.CadastroEstiloService;
+import com.algaworks.brewer.service.exception.ImpossivelExcluirEntidadeException;
 import com.algaworks.brewer.service.exception.NomeEstiloJaCadastradoException;
 
 @Controller
@@ -93,6 +97,31 @@ public class EstilosController {
     	mv.addObject("pagina", paginaWrapper);    	
     	return mv;
     }
+    
+    @GetMapping("/{codigo}")
+    public ModelAndView editar(@PathVariable("codigo") Estilo estilo){
+    	
+    	ModelAndView mv = novo(estilo);
+    	mv.addObject(estilo);
+    	
+    	return mv;
+    }
+    
+	@DeleteMapping("/{codigo}")
+	public @ResponseBody ResponseEntity<?> excluir(@PathVariable("codigo") Estilo estilo){
+	  
+		try {
+
+			cadastroEstiloService.excluir(estilo);
+		
+		}catch(ImpossivelExcluirEntidadeException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+			
+		}
+	   
+	   return ResponseEntity.ok().build();
+	   
+	}
     
     
     
