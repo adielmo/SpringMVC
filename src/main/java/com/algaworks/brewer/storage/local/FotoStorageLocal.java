@@ -29,7 +29,6 @@ public class FotoStorageLocal implements FotoStorage {
 		this(getDefault().getPath(System.getProperty("user.home"), ".brewerfotos"));
 		//this(getDefault().getPath(System.getenv("USERPROFILE"), ".brewerfotos"));
 	}
-	
 	public FotoStorageLocal(Path path) {
 		this.local = path;
 		criarPastas();
@@ -38,7 +37,6 @@ public class FotoStorageLocal implements FotoStorage {
 	@Override
 	public String salvarTemporariamente(MultipartFile[] files) {
 		String novoNome = null;
-		
 		if (files != null && files.length > 0) {
 			MultipartFile arquivo = files[0];
 			novoNome = renomearArquivo(arquivo.getOriginalFilename());
@@ -52,74 +50,65 @@ public class FotoStorageLocal implements FotoStorage {
 		return novoNome;
 	}
 	
-	
 	@Override
 	public byte[] recuperarFotoTemporaria(String nome) {
-		
 		try {
 			return Files.readAllBytes(this.localTemporario.resolve(nome));
-			
 		} catch (IOException e) {
-			
 			throw new RuntimeException("Erro lendo a foto temporária", e);
 		}
 	}
 	
-	@Override
-	public void salvar(String foto) {
 	
+/*	public void salvar(String foto) {
 		try {
 			Files.move(this.localTemporario.resolve(foto), this.local.resolve(foto));
 		} catch (IOException e) {
-			
 			throw new RuntimeException("Erro movendo a foto para destino final", e);
 		}
 		
 		try {
 			Thumbnails.of(this.local.resolve(foto).toString()).size(40, 68).toFiles(Rename.PREFIX_DOT_THUMBNAIL);
 		} catch (IOException e) {
-			
 			throw new RuntimeException("Erro gerando thumbnail", e);
+		}
+	}*/
+	@Override
+	public void salvar(String foto) {
+		try {
+			Files.move(this.localTemporario.resolve(foto), this.local.resolve(foto));
+		} catch (IOException e) {
+			
+		throw new RuntimeException("Erro movendo a foto para destino final", e);
 		}
 		
 	}
 	
 	@Override
 	public byte[] recuperar(String nome) {
-		
 		try {
 			return Files.readAllBytes(this.local.resolve(nome));
-			
 		} catch (IOException e) {
-			
-			throw new RuntimeException("Erro lendo a foto ", e);
+			throw new RuntimeException("Erro lendo a foto", e);
 		}
 	}
 	
 	@Override
 	public byte[] recuperarThumbnail(String fotoCerveja) {
-		
 		return recuperar(THUMBNAIL_PREFIX + fotoCerveja);
 	}
 	
 	@Override
 	public void excluir(String foto) {
-	
 		try {
-			
 			Files.deleteIfExists(this.local.resolve(foto));
 			Files.deleteIfExists(this.local.resolve(THUMBNAIL_PREFIX + foto));
-			
 		} catch (IOException e) {
-			
-		logger.warn(String.format("Erro apagando foto '%s' . Messagem: %s", foto, e.getMessage()));
+			logger.warn(String.format("Erro apagando foto '%s'. Mensagem: %s", foto, e.getMessage()));
 		}
 		
 	}
-
-
 	
-			
 	private void criarPastas() {
 		try {
 			Files.createDirectories(this.local);
@@ -147,5 +136,5 @@ public class FotoStorageLocal implements FotoStorage {
 		
 	}
 
-	
+
 }

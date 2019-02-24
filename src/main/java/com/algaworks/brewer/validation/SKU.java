@@ -17,7 +17,7 @@ import javax.validation.constraints.Pattern;
 public @interface SKU {
 	
 	@OverridesAttribute(constraint=Pattern.class, name="message")
-	String message()default "SKU deve segiur o padrão de XX9999";
+	String message()default "{com.algaworks.constraints.SKU.message}";
 	
 	Class<?>[] groups()default{};
 	Class<? extends Payload>[] payload()default{};

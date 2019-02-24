@@ -38,10 +38,10 @@ public class Cerveja implements Serializable {
 	private Long codigo;
 	
 	@SKU
-	@NotBlank(message="SKU é obrigatoria")
+	@NotBlank
 	private String sku;
 	
-	@NotBlank(message="Nome é obrigatoria")
+	@NotBlank
 	private String nome;
 	
 	@Size(max =50, min=10, message="Descrição deve ter de 10 há 50 caracteres")

@@ -16,8 +16,7 @@ public class FotoStorageRunnable implements Runnable {
 		
 		this.files = files;
 		this.resultado = resultado;
-		this.fotoStorage = fotoStorage;
-		
+		this.fotoStorage = fotoStorage;	
 		
 	}
 
@@ -26,8 +25,7 @@ public class FotoStorageRunnable implements Runnable {
 		
         String nomeFoto =  this.fotoStorage.salvarTemporariamente(files);       
 		String contentType = files[0].getContentType();
-		resultado.setResult(new FotoDto(nomeFoto, contentType));
-		
+		resultado.setResult(new FotoDto(nomeFoto, contentType));		
 
 	}
 
