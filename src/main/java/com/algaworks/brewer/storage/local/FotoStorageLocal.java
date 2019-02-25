@@ -73,6 +73,8 @@ public class FotoStorageLocal implements FotoStorage {
 			throw new RuntimeException("Erro gerando thumbnail", e);
 		}
 	}*/
+	
+	
 	@Override
 	public void salvar(String foto) {
 		try {
