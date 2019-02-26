@@ -30,7 +30,6 @@ public class CadastroCervejaService {
 		cervejas.save(cerveja);
 		
 		publisher.publishEvent(new CervejaSalvaEvent(cerveja));
-		
 	}
 	
 	@Transactional

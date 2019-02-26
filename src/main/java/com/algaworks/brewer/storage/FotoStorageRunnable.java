@@ -4,11 +4,10 @@ import org.springframework.web.context.request.async.DeferredResult;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.algaworks.brewer.dto.FotoDto;
-import com.algaworks.brewer.storage.FotoStorage;
 
 public class FotoStorageRunnable implements Runnable {
 	
-	private MultipartFile[]files;
+	private MultipartFile[] files;
 	private DeferredResult<FotoDto> resultado;
 	private FotoStorage fotoStorage;
 
