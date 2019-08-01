@@ -16,7 +16,6 @@ public class Endereco implements Serializable {
 	private String numero;
 	private String complemento;
 	
-	
 	private String cep;
 	
 	@ManyToOne

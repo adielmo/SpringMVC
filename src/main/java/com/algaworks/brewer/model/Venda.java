@@ -232,7 +232,6 @@ public class Venda implements Serializable{
 	public void calcularValorTotal(){		
 		
 		this.valorTotal = calcularValorTotal(getValorTotalItens(), getValorFrete(), getValorDesconto());
-		
 	}
 	
 	private BigDecimal calcularValorTotal(BigDecimal valorTotalItens, BigDecimal valorFrete, BigDecimal valorDesconto) {

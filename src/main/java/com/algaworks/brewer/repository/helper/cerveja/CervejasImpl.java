@@ -57,13 +57,14 @@ public class CervejasImpl implements CervejasQueries{
 	@Override
 	public ValorItensEstoque valorItensEstoque() {
 		
-		String query = "select new com.algaworks.brewer.dto.ValorItensEstoque(sum(valor * quantidadeEstoque), sum(quantidadeEstoque)) from Cerveja";
+String query = "select new com.algaworks.brewer.dto.ValorItensEstoque(sum(valor * quantidadeEstoque), sum(quantidadeEstoque)) from Cerveja";
 		
 		return manager.createQuery(query, ValorItensEstoque.class).getSingleResult();
 	}
 
 
 	private void adicionarFiltro(CervejaFilter filtro, Criteria criteria) {
+		
 		if (!StringUtils.isEmpty(filtro.getSku())) {
 			
     criteria.add(Restrictions.eq("sku", filtro.getSku()));	
@@ -98,7 +99,8 @@ criteria.add(Restrictions.ge("valor", filtro.getValorDe()));
 		
 		if (filtro.getValorAte() != null) {
 			
-criteria.add(Restrictions.le("valor", filtro.getValorAte()));		
+criteria.add(Restrictions.le("valor", filtro.getValorAte()));
+			
 		}
 	}
 	
@@ -111,8 +113,8 @@ criteria.add(Restrictions.le("valor", filtro.getValorAte()));
 
 	@Override
 	public List<CervejaDTO> porskuOuNome(String skuOuNome) {
-	  String jpql = "select new com.algaworks.brewer.dto.CervejaDTO(codigo,sku, nome, origem, valor, foto) "
-			  + "from Cerveja where lower(sku) like lower(:skuOuNome)or lower(nome) like lower(:skuOuNome)";
+String jpql = "select new com.algaworks.brewer.dto.CervejaDTO(codigo,sku, nome, origem, valor, foto) "
+	 + "from Cerveja where lower(sku) like lower(:skuOuNome)or lower(nome) like lower(:skuOuNome)";
 	  List<CervejaDTO> cervejasFiltradas = manager.createQuery(jpql, CervejaDTO.class)
 			           .setParameter("skuOuNome", skuOuNome + "%")
 			           .getResultList();

@@ -24,6 +24,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.algaworks.brewer.controller.page.PageWrapper;
 import com.algaworks.brewer.dto.CervejaDTO;
 import com.algaworks.brewer.model.Cerveja;
+import com.algaworks.brewer.model.Cliente;
 import com.algaworks.brewer.model.Origem;
 import com.algaworks.brewer.model.Sabor;
 import com.algaworks.brewer.repository.Cervejas;
@@ -38,7 +39,7 @@ public class CervejasController {
 	
 	@Autowired
 	private CadastroCervejaService cadastroCervejaService;
-	
+
 		
 	@Autowired
 	private Estilos estilos;
@@ -71,7 +72,7 @@ public class CervejasController {
 	
 	@GetMapping
 	public ModelAndView pesquisar(CervejaFilter cervejaFilter, BindingResult result,
-			@PageableDefault(size=3) Pageable pageable, HttpServletRequest httpServletRequest ) {
+			@PageableDefault(size=4) Pageable pageable, HttpServletRequest httpServletRequest ) {
 		
 		ModelAndView mv = new ModelAndView("cerveja/PesquisaCervejas");
 		mv.addObject("estilos", estilos.findAll());

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.algaworks.brewer.model.Cerveja;
+import com.algaworks.brewer.model.Cliente;
 import com.algaworks.brewer.repository.Cervejas;
 import com.algaworks.brewer.service.event.cerveja.CervejaSalvaEvent;
 import com.algaworks.brewer.service.exception.ImpossivelExcluirEntidadeException;
@@ -16,6 +17,7 @@ import com.algaworks.brewer.storage.FotoStorage;
 @Service
 public class CadastroCervejaService {
 	
+		
 	@Autowired
 	private Cervejas cervejas;
 	
@@ -30,6 +32,7 @@ public class CadastroCervejaService {
 		cervejas.save(cerveja);
 		
 		publisher.publishEvent(new CervejaSalvaEvent(cerveja));
+		
 	}
 	
 	@Transactional

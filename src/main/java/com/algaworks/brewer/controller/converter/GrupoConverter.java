@@ -7,8 +7,6 @@ import com.algaworks.brewer.model.Grupo;
 
 public class GrupoConverter implements Converter<String, Grupo> {
 	
-
-
 	@Override
 	public Grupo convert(String codigo) {
 		
